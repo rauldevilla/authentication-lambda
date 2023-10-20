@@ -1,0 +1,39 @@
+version: 0.2
+
+env:
+  variables:
+    LAMBDA_NAME: authentication
+    DEPLOYMENT_PACKAGE: deployment_package.zip
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      python: 3.11
+
+  pre_build:
+    on-failure: ABORT
+    commands:
+      - echo pre-build started on `date`
+      - cd src
+      - pip3 install -r requirements.txt -t ../lib
+      - cd ..
+
+  build:
+    on-failure: ABORT
+    commands:
+      - echo build started on `date`
+      - cd lib
+      - zip -r9 ../${DEPLOYMENT_PACKAGE} .
+      - cd ../src
+      - rm -rf ./tests
+      - rm -rf ./requirements.txt 
+      - zip -gr ../${DEPLOYMENT_PACKAGE} ./*
+      - cd ..
+
+  post_build:
+    on-failure: ABORT
+    commands:
+      - echo post-build started on `date`
+      - echo "Updating lambda code ...."
+      - aws lambda update-function-code --function-name ${LAMBDA_NAME} --zip-file fileb://${DEPLOYMENT_PACKAGE}
