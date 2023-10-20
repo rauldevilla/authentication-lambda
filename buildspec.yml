@@ -17,6 +17,7 @@ phases:
       - echo pre-build started on `date`
       - cd src
       - pip3 install -r requirements.txt -t ../lib
+      - echo "lib directory" > ../lib/readme.md
       - cd ..
 
   build:
