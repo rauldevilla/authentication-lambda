@@ -1,0 +1,15 @@
+{
+    "Effect": "Allow",
+    "Action": [
+        "lambda:AddPermission",
+        "lambda:RemovePermission",
+        "lambda:CreateAlias",
+        "lambda:UpdateAlias",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration",
+        "lambda:PutFunctionConcurrency",
+        "lambda:DeleteFunctionConcurrency",
+        "lambda:PublishVersion"
+    ],
+    "Resource": "arn:aws:lambda:*:ACCOUNT_NUMBER:function:LAMBDA_FUNCTION_NAME"
+}
