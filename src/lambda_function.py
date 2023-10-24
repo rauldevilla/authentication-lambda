@@ -1,8 +1,13 @@
+from enum import Enum
 import json
 import os
 
 from auth.authenticator import Authenticator
 from logger.app_logger import AppLogger
+
+class HTTP_METHOD(Enum):
+    OPTIONS = "OPTIONS"
+    POST = "POST"
 
 def __validate_api_key__(event):
     key = None
@@ -18,13 +23,8 @@ def __validate_api_key__(event):
     
     return None
 
-def __is_valid_http_method__(event) -> bool:
-    try:
-        return  event['requestContext']['http']['method'] == 'POST' or \
-                event['requestContext']['http']['method'] == 'OPTIONS'
-    except:
-        AppLogger.error(f'Event format is invalid {event}')
-        return False
+def __is_valid_http_method__(method:str) -> bool:
+    return method in [HTTP_METHOD.OPTIONS.value, HTTP_METHOD.POST.value]
 
 def __build_credentials_from_event__(event:any) -> dict:
     body:any = None
@@ -67,24 +67,34 @@ def __authenticate__(event) -> str:
         AppLogger.error(f"Error authenticating.\nEvent:\n{event}\nError:\n{e}")
         return None
 
-def lambda_handler(event:any, context:any) -> any:
-    if not __is_valid_http_method__(event):
-        return {'statusCode': 403, 'body': 'Method not authorized'}
-    
+def __get_http_method__(event:any) -> str:
     try:
-        response = __validate_api_key__(event)
-        if response:
-            return response
-        
+        return event['requestContext']['http']['method']
+    except Exception as e:
+        AppLogger.error(f"Error getting HTTP method. {e}")
+        return None
+
+def __do_options__():
+    return {
+        'statusCode': 200,
+        'headers': __get_cors_headers__(),
+        'body': "OK"
+    }
+
+def __do_post__(event):
+    try:
         token:str = __authenticate__(event)
         if token:
             return {
                 'statusCode': 200,
-                'headers': __get_cors_headers__(),
+                # 'headers': __get_cors_headers__(),
                 'body': token
             }
         else:
-            return {'statusCode': 403, 'body': 'Unathorized'}
+            return {
+                'statusCode': 403, 
+                'body': 'Unathorized'
+            }
         
     except Exception as e:
         AppLogger.error(str(e))
@@ -93,6 +103,22 @@ def lambda_handler(event:any, context:any) -> any:
             'body': 'Unknown error'
         }
 
+def lambda_handler(event:any, context:any) -> any:
+    
+    response = __validate_api_key__(event)
+    if response:
+        return response
+    
+    http_method:str = __get_http_method__(event)
+    if http_method == HTTP_METHOD.OPTIONS.value:
+        return __do_options__()
+    elif http_method == HTTP_METHOD.POST.value:
+        return __do_post__(event)
+    else:
+        return {
+            'statusCode': 403, 
+            'body': f'Method {http_method} not authorized'
+        }
 # if __name__ == "__main__":
 #     context:any = None
 #     event:any = None
