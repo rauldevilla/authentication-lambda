@@ -17,7 +17,7 @@ class Authenticator:
         
         return True
 
-    def __compare_credentials__(user:User, credentials:dict) -> bool:
+    def __compare_credentials__(self, user:User, credentials:dict) -> bool:
         return  user.login == credentials["login"] and \
                 user.password == credentials["password"]
 
