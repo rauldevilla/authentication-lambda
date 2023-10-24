@@ -87,7 +87,7 @@ def __do_post__(event):
         if token:
             return {
                 'statusCode': 200,
-                # 'headers': __get_cors_headers__(),
+                'headers': __get_cors_headers__(),
                 'body': token
             }
         else:
