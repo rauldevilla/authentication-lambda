@@ -27,8 +27,7 @@ class Authenticator:
             return None
 
         dao_users:UsersDAO = UsersDAO()
-        AppLogger.debug(f"Accessing repository using credentials {credentials} ...")
-        user:User = dao_users.get(credentials.login)
+        user:User = dao_users.get(credentials["login"])
         if not user:
             return None
         
