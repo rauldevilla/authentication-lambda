@@ -20,7 +20,8 @@ def __validate_api_key__(event):
 
 def __is_valid_http_method__(event) -> bool:
     try:
-        return event['requestContext']['http']['method'] == 'POST'
+        return  event['requestContext']['http']['method'] == 'POST' or \
+                event['requestContext']['http']['method'] == 'OPTIONS'
     except:
         AppLogger.error(f'Event format is invalid {event}')
         return False
