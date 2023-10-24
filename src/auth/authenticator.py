@@ -1,5 +1,6 @@
 import uuid
 from dao.users_dao import UsersDAO
+from logger.app_logger import AppLogger
 from model.user import User
 
 class Authenticator:
@@ -26,9 +27,12 @@ class Authenticator:
             return None
 
         dao_users:UsersDAO = UsersDAO()
+        AppLogger.debug(f"Accessing repository using credentials {credentials} ...")
         user:User = dao_users.get(credentials.login)
         if not user:
             return None
+        
+        AppLogger.debug(f"User {user} found.")
         
         if self.__compare_credentials__(user, credentials):
             return uuid.uuid4()
