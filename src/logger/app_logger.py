@@ -24,4 +24,19 @@ class AppLogger:
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         ch.setFormatter(formatter)
         self.logger.addHandler(ch)
+
+    @classmethod
+    def debug(cls, message:str):
+        AppLogger.instance().logger.debug(message)
     
+    @classmethod
+    def info(cls, message:str):
+        AppLogger.instance().logger.info(message)
+
+    @classmethod
+    def warn(cls, message:str):
+        AppLogger.instance().logger.warn(message)
+        
+    @classmethod
+    def error(cls, message:str):
+        AppLogger.instance().logger.error(message)

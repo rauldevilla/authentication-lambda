@@ -1,11 +1,8 @@
 import json
-import logging
 import os
 
 from auth.authenticator import Authenticator
-
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
+from logger.app_logger import AppLogger
 
 def __validate_api_key__(event):
     key = None
@@ -25,7 +22,7 @@ def __is_valid_http_method__(event) -> bool:
     try:
         return event['requestContext']['http']['method'] == 'POST'
     except:
-        logger.error(f'Event format is invalid {event}')
+        AppLogger.error(f'Event format is invalid {event}')
         return False
 
 def __build_credentials_from_event__(event:any) -> dict:
@@ -45,9 +42,13 @@ def __build_credentials_from_event__(event:any) -> dict:
     }
 
 def __authenticate__(event) -> str:
-    credentials:dict = __build_credentials_from_event__(event)
-    authenticator:Authenticator = Authenticator()
-    return authenticator.authenticate(credentials)
+    try:
+        credentials:dict = __build_credentials_from_event__(event)
+        authenticator:Authenticator = Authenticator()
+        return authenticator.authenticate(credentials)
+    except Exception as e:
+        AppLogger.error(f"Error authenticating.\nEvent:\n{event}\nErro:\n{e}")
+        return None
 
 def lambda_handler(event:any, context:any) -> any:
     
@@ -70,7 +71,7 @@ def lambda_handler(event:any, context:any) -> any:
             return {'statusCode': 403, 'body': 'Unathorized'}
         
     except Exception as e:
-        logger.error(str(e))
+        AppLogger.error(str(e))
         return {
             'statusCode': 500,
             'body': 'Unknown error'

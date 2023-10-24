@@ -14,11 +14,11 @@ class UsersDAO:
         table = dynamodb.Table(TABLE_USERS)
 
         key:dict = {'login': login}
-        AppLogger.instance().logger.debug(f"Getting user {key} ..")
+        AppLogger.debug(f"Getting user {key} ..")
         reponse:any = table.get_item(
             Key = key
         )
-        AppLogger.instance().logger.debug(f"Response {reponse} ..")
+        AppLogger.debug(f"Response {reponse} ..")
 
         item:any = reponse['Item']
         if item:
