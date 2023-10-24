@@ -58,13 +58,6 @@ def __authenticate__(event) -> str:
         AppLogger.error(f"Error authenticating.\nEvent:\n{event}\nError:\n{e}")
         return None
 
-def __get_headers__():
-    return {
-        "access-control-allow-origin": "*",
-        "access-control-allow-headers": "Content-Type",
-        "access-control-allow-methods": "OPTIONS,POST,GET"
-    }
-
 def lambda_handler(event:any, context:any) -> any:
     if not __is_valid_http_method__(event):
         return {'statusCode': 403, 'body': 'Method not authorized'}
@@ -78,7 +71,6 @@ def lambda_handler(event:any, context:any) -> any:
         if token:
             return {
                 'statusCode': 200,
-                'headers': __get_headers__(),
                 'body': token
             }
         else:
