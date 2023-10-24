@@ -60,9 +60,9 @@ def __authenticate__(event) -> str:
 
 def __get_headers__():
     return {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        "access-control-allow-origin": "*",
+        "access-control-allow-headers": "Content-Type",
+        "access-control-allow-methods": "OPTIONS,POST,GET"
     }
 
 def lambda_handler(event:any, context:any) -> any:
