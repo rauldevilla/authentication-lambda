@@ -4,8 +4,6 @@ import os
 
 from auth.authenticator import Authenticator
 
-KEYS = ['7qo2u4fbasd98ahusdivasdu8']
-
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
@@ -17,10 +15,7 @@ def __validate_api_key__(event):
     except:
         key = None
 
-    if not key or not key in KEYS:
-        return {'statusCode': 403, 'body': 'Unauthorized'}
-
-    valid_api_key:str = os.environ("API_KEY")
+    valid_api_key:str = os.environ["API_KEY"]
     if valid_api_key and key != valid_api_key:
         return {'statusCode': 403, 'body': 'Invalid key'}
     
