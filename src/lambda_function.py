@@ -53,7 +53,8 @@ def __get_cors_headers__() -> dict:
     return {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers": "OPTIONS, POST",
-        "Access-Control-Allow-Methods": "Origin, Content-Type, X-Auth-Token"        
+        "Access-Control-Allow-Methods": "Origin, Content-Type, X-Auth-Token",
+        "Access-Control-Allow-Credentials": True
     }
 
 def __authenticate__(event) -> str:
