@@ -1,6 +1,6 @@
 import json
 import logging
-import boto3
+import os
 
 from auth.authenticator import Authenticator
 
@@ -19,7 +19,11 @@ def __validate_api_key__(event):
 
     if not key or not key in KEYS:
         return {'statusCode': 403, 'body': 'Unauthorized'}
-            
+
+    valid_api_key:str = os.environ("API_KEY")
+    if valid_api_key and key != valid_api_key:
+        return {'statusCode': 403, 'body': 'Invalid key'}
+    
     return None
 
 def __is_valid_http_method__(event) -> bool:
