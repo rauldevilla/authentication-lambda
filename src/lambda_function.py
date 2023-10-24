@@ -31,7 +31,7 @@ def __build_credentials_from_event__(event:any) -> dict:
     try:
         body = event['body']
     except Exception as e:
-        AppLogger.error("Error geting body from event: {e}")
+        AppLogger.error(f"Error geting body from event: {e}")
         return None
     
     if not isinstance(body, dict):
@@ -62,7 +62,7 @@ def lambda_handler(event:any, context:any) -> any:
         if response:
             return response
         
-        token:str = __authenticate__(event['body'])
+        token:str = __authenticate__(event)
         if token:
             return {
                 'statusCode': 200,
