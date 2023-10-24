@@ -51,7 +51,7 @@ def __authenticate__(event) -> str:
         return None
 
 def lambda_handler(event:any, context:any) -> any:
-    
+    AppLogger.debug(f"Received: {event}")
     if not __is_valid_http_method__(event):
         return {'statusCode': 403, 'body': 'Method not authorized'}
     
@@ -64,7 +64,6 @@ def lambda_handler(event:any, context:any) -> any:
         if token:
             return {
                 'statusCode': 200,
-                #'body': json.dumps('Hello from Lambda!')
                 'body': token
             }
         else:
