@@ -34,6 +34,6 @@ class Authenticator:
         AppLogger.debug(f"User {user} found.")
         
         if self.__compare_credentials__(user, credentials):
-            return uuid.uuid4()
+            return str(uuid.uuid4())
         
         return None
