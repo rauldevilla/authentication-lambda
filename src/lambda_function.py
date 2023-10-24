@@ -111,7 +111,9 @@ def lambda_handler(event:any, context:any) -> any:
     
     http_method:str = __get_http_method__(event)
     if http_method == HTTP_METHOD.OPTIONS.value:
-        return __do_options__()
+        options_response = __do_options__()
+        AppLogger.debug(f"Returnig OPTIONS {options_response} ...")
+        return options_response
     elif http_method == HTTP_METHOD.POST.value:
         return __do_post__(event)
     else:
