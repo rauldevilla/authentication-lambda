@@ -51,8 +51,6 @@ def __authenticate__(event) -> str:
 
 def lambda_handler(event:any, context:any) -> any:
     
-    logger.debug(str(event))
-    
     if not __is_valid_http_method__(event):
         return {'statusCode': 403, 'body': 'Method not authorized'}
     
