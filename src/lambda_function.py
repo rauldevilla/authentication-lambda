@@ -30,7 +30,8 @@ def __build_credentials_from_event__(event:any) -> dict:
 
     try:
         body = event['body']
-    except:
+    except Exception as e:
+        AppLogger.error("Error geting body from event: {e}")
         return None
     
     if not isinstance(body, dict):
@@ -45,9 +46,10 @@ def __authenticate__(event) -> str:
     try:
         credentials:dict = __build_credentials_from_event__(event)
         authenticator:Authenticator = Authenticator()
+        AppLogger.debug(f"Authenticating with credentials {credentials} ...")
         return authenticator.authenticate(credentials)
     except Exception as e:
-        AppLogger.error(f"Error authenticating.\nEvent:\n{event}\nErro:\n{e}")
+        AppLogger.error(f"Error authenticating.\nEvent:\n{event}\nError:\n{e}")
         return None
 
 def lambda_handler(event:any, context:any) -> any:
