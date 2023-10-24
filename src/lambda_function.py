@@ -51,8 +51,8 @@ def __build_credentials_from_event__(event:any) -> dict:
 def __get_cors_headers__() -> dict:
     return {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "*",
-        "Access-Control-Allow-Methods": "*"        
+        "Access-Control-Allow-Headers": "OPTIONS, POST",
+        "Access-Control-Allow-Methods": "Origin, Content-Type, X-Auth-Token"        
     }
 
 def __authenticate__(event) -> str:
