@@ -92,7 +92,7 @@ def __do_post__(event):
             'statusCode': 500,
             'body': 'Unknown error'
         }
-
+ 
 def lambda_handler(event:any, context:any) -> any:
     
     response = __validate_api_key__(event)
