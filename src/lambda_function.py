@@ -49,14 +49,6 @@ def __build_credentials_from_event__(event:any) -> dict:
 
     return credentials
 
-def __get_cors_headers__() -> dict:
-    return {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "OPTIONS, POST",
-        "Access-Control-Allow-Methods": "Origin, Content-Type, X-Auth-Token",
-        "Access-Control-Allow-Credentials": True
-    }
-
 def __authenticate__(event) -> str:
     try:
         credentials:dict = __build_credentials_from_event__(event)
@@ -77,7 +69,6 @@ def __get_http_method__(event:any) -> str:
 def __do_options__():
     return {
         'statusCode': 200,
-        # 'headers': __get_cors_headers__(),
         'body': "OK"
     }
 
@@ -87,7 +78,6 @@ def __do_post__(event):
         if token:
             return {
                 'statusCode': 200,
-                # 'headers': __get_cors_headers__(),
                 'body': token
             }
         else:
