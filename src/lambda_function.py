@@ -37,10 +37,16 @@ def __build_credentials_from_event__(event:any) -> dict:
     if not isinstance(body, dict):
         body = json.loads(body)
 
-    return {
-        'login': body['login'] if 'login' in body else None,
-        'password': body['password'] if 'password' in body else None
-    }
+    credentials:dict = None
+    try:
+        credentials = {
+            'login': body['login'] if 'login' in body else None,
+            'password': body['password'] if 'password' in body else None
+        }
+    except Exception as e:
+        AppLogger.error(f"Error extracting credentials from body {body}. {e}")
+
+    return credentials
 
 def __authenticate__(event) -> str:
     try:
