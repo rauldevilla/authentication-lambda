@@ -48,6 +48,13 @@ def __build_credentials_from_event__(event:any) -> dict:
 
     return credentials
 
+def __get_cors_headers__() -> dict:
+    return {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Methods": "*"        
+    }
+
 def __authenticate__(event) -> str:
     try:
         credentials:dict = __build_credentials_from_event__(event)
@@ -71,6 +78,7 @@ def lambda_handler(event:any, context:any) -> any:
         if token:
             return {
                 'statusCode': 200,
+                'headers': __get_cors_headers__(),
                 'body': token
             }
         else:
