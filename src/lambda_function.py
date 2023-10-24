@@ -77,7 +77,7 @@ def __get_http_method__(event:any) -> str:
 def __do_options__():
     return {
         'statusCode': 200,
-        'headers': __get_cors_headers__(),
+        # 'headers': __get_cors_headers__(),
         'body': "OK"
     }
 
@@ -87,7 +87,7 @@ def __do_post__(event):
         if token:
             return {
                 'statusCode': 200,
-                'headers': __get_cors_headers__(),
+                # 'headers': __get_cors_headers__(),
                 'body': token
             }
         else:
